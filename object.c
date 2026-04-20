@@ -245,9 +245,10 @@ int object_read(const ObjectID *id, ObjectType *type_out, void **data_out, size_
     }
 
     size_t data_len = (size_t)file_size - header_len - 1;
-    void *data = malloc(data_len > 0 ? data_len : 1);
+    uint8_t *data = malloc(data_len + 1);
     if (!data) { free(buffer); return -1; }
     if (data_len > 0) memcpy(data, null_byte + 1, data_len);
+    data[data_len] = '\0';
 
     free(buffer);
     *data_out = data;
